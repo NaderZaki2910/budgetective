@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 
@@ -7,8 +8,8 @@ describe('AppComponent', () => {
   beforeEach(async () => {
     TestBed.overrideComponent(AppComponent, {
       add: {
-        imports: [RouterTestingModule]
-      }
+        imports: [RouterTestingModule, ReactiveFormsModule],
+      },
     });
   });
 

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { ToggleChangeEventDetail } from '@ionic/core/components';
 import { IonicModule } from '@ionic/angular';
 @Component({
   selector: 'app-root',
@@ -9,15 +10,43 @@ import { IonicModule } from '@ionic/angular';
   standalone: true,
   imports: [IonicModule, RouterLink, RouterLinkActive, CommonModule],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  themeToggle = false;
+  isDark: boolean = false;
   public appPages = [
-    { title: 'Inbox', url: '/folder/inbox', icon: 'mail' },
-    { title: 'Outbox', url: '/folder/outbox', icon: 'paper-plane' },
-    { title: 'Favorites', url: '/folder/favorites', icon: 'heart' },
-    { title: 'Archived', url: '/folder/archived', icon: 'archive' },
-    { title: 'Trash', url: '/folder/trash', icon: 'trash' },
-    { title: 'Spam', url: '/folder/spam', icon: 'warning' },
+    { title: 'Login', url: '/login', icon: 'person', requiresLogin: false },
   ];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
+  public labels = [];
   constructor() {}
+
+  ngOnInit() {
+    // Use matchMedia to check the user preference
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    console.log(prefersDark.matches);
+    this.isDark = prefersDark.matches;
+    // Initialize the dark theme based on the initial
+    // value of the prefers-color-scheme media query
+    this.initializeDarkTheme(prefersDark.matches);
+
+    // Listen for changes to the prefers-color-scheme media query
+    prefersDark.addEventListener('change', (mediaQuery) => this.toggleDarkTheme(mediaQuery.matches));
+  }
+
+  // Check/uncheck the toggle and update the theme based on isDark
+  initializeDarkTheme(isDark:boolean) {
+    this.themeToggle = isDark;
+    this.toggleDarkTheme(isDark);
+  }
+
+  // Listen for the toggle check/uncheck to toggle the dark theme
+  toggleChange(event:Event) {
+    const ev = event as CustomEvent<ToggleChangeEventDetail<boolean>>;
+    this.toggleDarkTheme(ev.detail.checked);
+  }
+
+  // Add or remove the "dark" class on the document body
+  toggleDarkTheme(shouldAdd:boolean) {
+    this.isDark = shouldAdd;
+    document.body.classList.toggle('dark', shouldAdd);
+  }
 }
