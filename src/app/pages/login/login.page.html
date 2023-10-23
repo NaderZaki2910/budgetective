@@ -1,39 +1,39 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>Login</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-header [translucent]="true"> </ion-header>
 
 <ion-content [fullscreen]="true">
-  <div class="d-flex justify-content-center pt-5">
-    <ion-card class="w-25">
-      <ion-card-title class="d-flex justify-content-center pt-4">
-        <ion-label>Enter Credentials</ion-label>
+  <div class="d-flex justify-content-center vertical-center">
+    <ion-card>
+      <ion-card-title class="d-flex justify-content-center">
+        <ion-img
+          src="../assets/icon/logo-full-light.svg"
+          *ngIf="isDark"
+          class="w-75 my-2"
+        ></ion-img>
+        <ion-img
+          src="../assets/icon/logo-full.svg"
+          *ngIf="!isDark"
+          class="img-padding"
+        ></ion-img>
       </ion-card-title>
       <ion-card-content>
         <form [formGroup]="login">
           <ion-grid>
             <ion-col>
-              <ion-row class="py-1">
-                <ion-label>
-                  Username
-                </ion-label>
+              <ion-row class="pb-1">
                 <ion-input
                   id="username"
+                  label="Username"
+                  labelPlacement="floating"
                   formControlName="username"
                   placeholder="Enter Username"
                 >
                 </ion-input>
               </ion-row>
-              <ion-row class="py-1">
-                <ion-label>
-                  Password
-                </ion-label>
+              <ion-row class="pb-1">
                 <ion-input
                   id="password"
+                  label="Password"
+                  labelPlacement="floating"
                   formControlName="password"
                   placeholder="Enter Password"
                   type="password"
@@ -41,9 +41,7 @@
                 </ion-input>
               </ion-row>
               <ion-row class="d-flex justify-content-center">
-                <ion-button>
-                  Login
-                </ion-button>
+                <ion-button (click)="Login()"> Login </ion-button>
               </ion-row>
             </ion-col>
           </ion-grid>
