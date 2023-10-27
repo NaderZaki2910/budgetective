@@ -13,6 +13,7 @@ import { MenuController } from '@ionic/angular';
 import { StorageService } from 'src/app/services/storage/storage.service';
 import { Token, User } from '../../models/login.model';
 import { Router } from '@angular/router';
+import { ThemeService } from 'src/app/services/theme/theme.service';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,7 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule],
 })
-export class LoginPage implements OnInit, OnDestroy {
+export class LoginPage implements OnInit {
   login!: FormGroup;
   isDark: boolean = false;
 
@@ -29,38 +30,29 @@ export class LoginPage implements OnInit, OnDestroy {
     public menu: MenuController,
     private auth: AuthService,
     private router: Router,
-    private storage: StorageService
+    private storage: StorageService,
+    private theme: ThemeService
   ) {}
 
-  ngOnDestroy(): void {
-    throw new Error('Method not implemented.');
-  }
-
-  ngOnInit() {
+  async ngOnInit() {
     this.login = new FormGroup({
       username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
     });
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-    this.isDark = prefersDark.matches;
 
-    // Listen for changes to the prefers-color-scheme media query
-    prefersDark.addEventListener(
-      'change',
-      (mediaQuery) => (this.isDark = mediaQuery.matches)
+    await this.theme
+      .getTheme()
+      .then((theme: any) => {
+        this.isDark = theme['isDark'] == 'true' ? true : false;
+      })
+      .catch((err) => {
+        console.log(err);
+        this.isDark = false;
+      });
+    const prefersDark = window.matchMedia('dark');
+    prefersDark.addEventListener('change', (mediaQuery) =>
+      console.log(mediaQuery, 'media')
     );
-
-    this.auth.getToken().then((token: Token) => {
-      if (!!token.token && !!token.user) this.router.navigate(['/dashboard']);
-    });
-  }
-
-  ionViewWillEnter() {
-    this.menu.enable(false);
-  }
-
-  ionViewDidLeave() {
-    this.menu.enable(true);
   }
 
   async Login() {

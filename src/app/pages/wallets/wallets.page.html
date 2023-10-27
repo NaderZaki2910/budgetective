@@ -1,7 +1,237 @@
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">wallets</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Wallets Stats</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <div></div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col>
+        <ion-card>
+          <ion-card-header>
+            <ion-item lines="none">
+              <ion-card-title>Configure Wallets</ion-card-title>
+              <ion-button slot="end" id="open-modal">
+                <ion-icon ios="add-outline" md="add-sharp"></ion-icon>
+              </ion-button>
+            </ion-item>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-list>
+              <ion-item *ngFor="let wallet of wallets">
+                <ion-item-sliding>
+                  <ion-item>
+                    <ion-label> {{wallet.name}} </ion-label>
+                    <ion-label> {{wallet.amount}} </ion-label>
+                  </ion-item>
+
+                  <ion-item-options side="end">
+                    <ion-item-option>
+                      <ion-icon
+                        ios="create-outline"
+                        md="create-sharp"
+                      ></ion-icon>
+                    </ion-item-option>
+                    <ion-item-option color="danger">
+                      <ion-icon ios="trash-outline" md="trash-sharp"></ion-icon>
+                    </ion-item-option>
+                  </ion-item-options>
+                </ion-item-sliding>
+              </ion-item>
+            </ion-list>
+            <app-paging
+              [size]="pageSize"
+              [itemsAmount]="totalItems"
+              (curPage)="pageChanged($event)"
+            ></app-paging>
+          </ion-card-content>
+        </ion-card>
+        <ion-modal
+          id="modal"
+          trigger="open-modal"
+          (willDismiss)="onWillDismissAddWallet($event)"
+          (willPresent)="onWillPresentAddWallet()"
+        >
+          <ng-template>
+            <ion-header>
+              <ion-toolbar>
+                <!-- <ion-buttons slot="start">
+                  <ion-button (click)="cancel()">Cancel</ion-button>
+                </ion-buttons> -->
+                <ion-title>Add New Wallet</ion-title>
+                <!-- <ion-buttons slot="end">
+                  <ion-button (click)="confirm()" [strong]="true"
+                    >Confirm</ion-button
+                  >
+                </ion-buttons> -->
+              </ion-toolbar>
+            </ion-header>
+            <ion-content class="px-2">
+              <form [formGroup]="addWalletForm">
+                <ion-grid>
+                  <ion-col>
+                    <ion-row class="pb-1">
+                      <ion-input
+                        id="name"
+                        label="name"
+                        labelPlacement="floating"
+                        formControlName="name"
+                        placeholder="Enter The Wallet's Name"
+                        type="text"
+                      >
+                      </ion-input>
+                    </ion-row>
+                    <ion-row class="pb-1">
+                      <ion-input
+                        id="amount"
+                        label="amount"
+                        labelPlacement="floating"
+                        formControlName="amount"
+                        placeholder="Enter The Wallet's Value"
+                        type="number"
+                      >
+                      </ion-input>
+                    </ion-row>
+                    <ion-row class="pb-1">
+                      <ion-input
+                        id="description"
+                        label="description"
+                        labelPlacement="floating"
+                        formControlName="description"
+                        placeholder="Enter The Wallet's Description"
+                        type="text"
+                      >
+                      </ion-input>
+                    </ion-row>
+                    <ion-row class="d-flex justify-content-center">
+                      <ion-button (click)="addWallet()"> Add </ion-button>
+                    </ion-row>
+                  </ion-col>
+                </ion-grid>
+              </form>
+              <!-- <ion-item>
+                <ion-input
+                  label="Enter your name"
+                  labelPlacement="stacked"
+                  type="text"
+                  placeholder="Your name"
+                  [(ngModel)]="name"
+                ></ion-input>
+              </ion-item> -->
+            </ion-content>
+          </ng-template>
+        </ion-modal>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Wallets Stats</ion-card-title></ion-card-header
+          >
+          <ion-card-content>
+            <div></div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col>
+        <ion-card>
+          <ion-card-header>
+            <ion-item lines="none">
+              <ion-card-title>Configure Wallets</ion-card-title>
+            </ion-item>
+          </ion-card-header>
+          <ion-card-content> </ion-card-content>
+        </ion-card>
+        <ion-modal
+          id="modal"
+          trigger="open-modal"
+          (willDismiss)="onWillDismissAddWallet($event)"
+          (willPresent)="onWillPresentAddWallet()"
+        >
+          <ng-template>
+            <ion-header>
+              <ion-toolbar>
+                <!-- <ion-buttons slot="start">
+                  <ion-button (click)="cancel()">Cancel</ion-button>
+                </ion-buttons> -->
+                <ion-title>Add New Wallet</ion-title>
+                <!-- <ion-buttons slot="end">
+                  <ion-button (click)="confirm()" [strong]="true"
+                    >Confirm</ion-button
+                  >
+                </ion-buttons> -->
+              </ion-toolbar>
+            </ion-header>
+            <ion-content class="px-2">
+              <form [formGroup]="addWalletForm">
+                <ion-grid>
+                  <ion-col>
+                    <ion-row class="pb-1">
+                      <ion-input
+                        id="name"
+                        label="name"
+                        labelPlacement="floating"
+                        formControlName="name"
+                        placeholder="Enter The Wallet's Name"
+                        type="text"
+                      >
+                      </ion-input>
+                    </ion-row>
+                    <ion-row class="pb-1">
+                      <ion-input
+                        id="amount"
+                        label="amount"
+                        labelPlacement="floating"
+                        formControlName="amount"
+                        placeholder="Enter The Wallet's Value"
+                        type="number"
+                      >
+                      </ion-input>
+                    </ion-row>
+                    <ion-row class="pb-1">
+                      <ion-input
+                        id="description"
+                        label="description"
+                        labelPlacement="floating"
+                        formControlName="description"
+                        placeholder="Enter The Wallet's Description"
+                        type="text"
+                      >
+                      </ion-input>
+                    </ion-row>
+                    <ion-row class="d-flex justify-content-center">
+                      <ion-button (click)="addWallet()"> Add </ion-button>
+                    </ion-row>
+                  </ion-col>
+                </ion-grid>
+              </form>
+              <!-- <ion-item>
+                <ion-input
+                  label="Enter your name"
+                  labelPlacement="stacked"
+                  type="text"
+                  placeholder="Your name"
+                  [(ngModel)]="name"
+                ></ion-input>
+              </ion-item> -->
+            </ion-content>
+          </ng-template>
+        </ion-modal>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-alert
+    [isOpen]="isAlertOpen"
+    header="Alert"
+    message="{{alertErrorMessage}}"
+    [buttons]="alertButtons"
+    (didDismiss)="setAlertOpen(false)"
+  ></ion-alert>
 </ion-content>

@@ -30,7 +30,7 @@ export class AuthService {
     var result;
     if (login) {
       var token = await firstValueFrom(
-        this.http.post<Token>(`${environment.api}/login`, {
+        this.http.post<Token>(`${environment.api}/user/login`, {
           username: login.username,
           password: login.password,
         })
@@ -48,7 +48,11 @@ export class AuthService {
     return result;
   }
 
-  async getToken(): Promise<any> {
-    return this.storage.get('access_token');
+  async getToken(): Promise<Token> {
+    return await this.storage.get('access_token');
+  }
+
+  async deleteToken() {
+    return this.storage.remove('access_token');
   }
 }

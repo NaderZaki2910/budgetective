@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Storage } from '@ionic/storage-angular';
+import { Token } from 'src/app/models/login.model';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,7 @@ export class StorageService {
   private _storage: Storage | null = null;
 
   constructor(private storage: Storage) {
-    this.init();
+    // this.init();
   }
 
   async init() {
@@ -24,7 +25,12 @@ export class StorageService {
     await this._storage?.set(key, value);
   }
 
+  public async remove(key: string) {
+    await this._storage?.remove(key);
+  }
+
   public async get(key: string): Promise<any> {
+    if (this._storage == null) await this.init();
     return await this._storage?.get(key);
   }
 }

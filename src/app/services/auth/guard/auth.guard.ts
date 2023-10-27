@@ -22,10 +22,10 @@ export class AuthGuard implements CanActivate {
       await this.auth
         .getToken()
         .then((token: Token) => {
-          console.log(token);
-          if (!!token.token && !!token.user) resolve(true);
+          // console.log(token);
+          if (!!token && !!token.token && !!token.user) resolve(true);
           else {
-            console.log('User is not logged in');
+            // console.log('User is not logged in');
             this.router.navigate(['/login']);
             resolve(false);
           }

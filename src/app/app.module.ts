@@ -10,6 +10,7 @@ import {
   RouteReuseStrategy,
   RouterLink,
   RouterLinkActive,
+  RouterModule,
   provideRouter,
 } from '@angular/router';
 import { environment } from '../environments/environment';
@@ -29,10 +30,12 @@ import { Drivers } from '@ionic/storage';
     CommonModule,
     ReactiveFormsModule,
     HttpClientModule,
+    ComponentsModule,
     IonicStorageModule.forRoot({
       name: '__mydb',
       driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage],
     }),
+    RouterModule.forRoot(routes),
   ],
   providers: [
     {
@@ -49,3 +52,4 @@ import { Drivers } from '@ionic/storage';
   bootstrap: [AppComponent],
 })
 export class AppModule {}
+import { ComponentsModule } from './components/components.module';

@@ -1,19 +1,8 @@
-<ion-header [translucent]="true"> </ion-header>
-
-<ion-content [fullscreen]="true">
+<ion-content>
   <div class="d-flex justify-content-center vertical-center">
     <ion-card>
       <ion-card-title class="d-flex justify-content-center">
-        <ion-img
-          src="../assets/icon/logo-full-light.svg"
-          *ngIf="isDark"
-          class="w-75 my-2"
-        ></ion-img>
-        <ion-img
-          src="../assets/icon/logo-full.svg"
-          *ngIf="!isDark"
-          class="img-padding"
-        ></ion-img>
+        <ion-img id="logo" class="w-75 my-2"></ion-img>
       </ion-card-title>
       <ion-card-content>
         <form [formGroup]="login">

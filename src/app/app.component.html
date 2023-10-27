@@ -1,57 +1,78 @@
 <ion-app>
-  <ion-menu contentId="main-content" class="pt-0">
-    <ion-content class="pt-0">
-      <ion-list id="page-list" class="pt-0">
-        <!-- <ion-note>hi@ionicframework.com</ion-note> -->
-
-        <ion-menu-toggle
-          auto-hide="false"
-          *ngFor="let p of appPages; let i = index"
-        >
-          <ion-item
-            routerDirection="root"
-            [routerLink]="[p.url]"
-            lines="none"
-            detail="false"
-            routerLinkActive="selected"
-          >
-            <ion-icon
-              aria-hidden="true"
-              slot="start"
-              [ios]="p.icon + '-outline'"
-              [md]="p.icon + '-sharp'"
-            ></ion-icon>
-            <ion-label>{{ p.title }}</ion-label>
-          </ion-item>
-        </ion-menu-toggle>
-      </ion-list>
-
-      <!-- <ion-list id="labels-list">
-        <ion-list-header>Labels</ion-list-header>
-
-        <ion-item *ngFor="let label of labels" lines="none">
-          <ion-icon aria-hidden="true" slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
-          <ion-label>{{ label }}</ion-label>
-        </ion-item>
-      </ion-list> -->
-    </ion-content>
-    <ion-footer>
-      <ion-item>
-        <ion-toggle
-          (ionChange)="toggleChange($event)"
-          justify="space-between"
-          [checked]="themeToggle"
-          >Dark Mode</ion-toggle
-        >
-      </ion-item>
-    </ion-footer>
-  </ion-menu>
   <ion-header>
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
+      <div class="d-flex justify-content-start">
+        <ion-chip *ngIf="pageLoaded" color="primary">
+          <ion-icon ios="person-outline" md="person-sharp"></ion-icon>
+          <ion-label class="px-2 text-center" style="text-align: center">
+            {{ username }}
+          </ion-label>
+        </ion-chip>
+        <ion-chip (click)="logout()" color="danger" *ngIf="pageLoaded">
+          <ion-icon
+            ios="log-out-outline"
+            md="log-out-sharp"
+            color="danger"
+            size="small"
+            class="px-0 mx-0"
+          ></ion-icon>
+        </ion-chip>
+      </div>
     </ion-toolbar>
   </ion-header>
-  <ion-router-outlet id="main-content"></ion-router-outlet>
+  <ion-content>
+    <ion-menu contentId="main-content">
+      <ion-header color="primary"> </ion-header>
+      <ion-content>
+        <ion-list id="page-list" class="pt-0" *ngIf="pageLoaded">
+          <ion-menu-toggle
+            auto-hide="false"
+            *ngFor="let p of appPages; let i = index"
+          >
+            <ion-item
+              routerDirection="root"
+              [routerLink]="[p.url]"
+              lines="none"
+              detail="false"
+              routerLinkActive="selected"
+            >
+              <ion-icon
+                aria-hidden="true"
+                slot="start"
+                [ios]="p.icon + '-outline'"
+                [md]="p.icon + '-sharp'"
+              ></ion-icon>
+              <ion-label>{{ p.title }}</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+        </ion-list>
+
+        <!-- <ion-list id="labels-list">
+          <ion-list-header>Labels</ion-list-header>
+
+          <ion-item *ngFor="let label of labels" lines="none">
+            <ion-icon aria-hidden="true" slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
+            <ion-label>{{ label }}</ion-label>
+          </ion-item>
+        </ion-list> -->
+      </ion-content>
+      <ion-footer>
+        <ion-item>
+          <ion-toggle
+            (ionChange)="toggleChange($event)"
+            justify="space-between"
+            [checked]="isDark"
+            >Dark Mode</ion-toggle
+          >
+        </ion-item>
+      </ion-footer>
+    </ion-menu>
+    <router-outlet
+      id="main-content"
+      (activate)="routeChanged($event)"
+    ></router-outlet>
+  </ion-content>
 </ion-app>
