@@ -8,13 +8,18 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class PagingComponent implements OnInit {
   @Input() set size(pageSize: number) {
     this.pageSize = pageSize;
-    console.log(this.pageSize, this.totalItems);
-    this.totalPages = Math.ceil(this.totalItems / pageSize);
+    this.totalPages =
+      Math.ceil(this.totalItems / this.pageSize) > 0
+        ? Math.ceil(this.totalItems / this.pageSize)
+        : 1;
   }
   @Input() set itemsAmount(totalItems: number) {
     this.totalItems = totalItems;
     console.log(this.pageSize, this.totalItems);
-    this.totalPages = Math.ceil(totalItems / this.pageSize);
+    this.totalPages =
+      Math.ceil(this.totalItems / this.pageSize) > 0
+        ? Math.ceil(this.totalItems / this.pageSize)
+        : 1;
   }
   @Output() curPage = new EventEmitter<number>();
   pageSize: number = 1;

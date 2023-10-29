@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { Wallet } from 'src/app/models/wallet.module';
+import Wallet from 'src/app/models/wallet.module';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -19,6 +19,11 @@ export class WalletService {
       this.http.get(
         `${environment.api}/wallet/getWallets?page=${page}&pageSize=${pageSize}`
       )
+    );
+  }
+  async getWalletsStats() {
+    return await firstValueFrom(
+      this.http.get(`${environment.api}/wallet/getWalletsStats`)
     );
   }
 }

@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormControl,
@@ -7,16 +13,13 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import {
-  InfiniteScrollCustomEvent,
-  IonModal,
-  IonicModule,
-} from '@ionic/angular';
-import { Wallet } from 'src/app/models/wallet.module';
+import { IonModal, IonicModule } from '@ionic/angular';
+import Wallet from 'src/app/models/wallet.module';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { WalletService } from 'src/app/services/wallet/wallet.service';
-import { AppModule } from 'src/app/app.module';
 import { ComponentsModule } from '../../components/components.module';
+import { Chart } from 'chart.js';
+import Stat from 'src/app/models/stats.model';
 
 @Component({
   selector: 'app-wallets',
@@ -32,27 +35,22 @@ import { ComponentsModule } from '../../components/components.module';
   ],
 })
 export class WalletsPage implements OnInit {
-  @ViewChild(IonModal)
-  modal!: IonModal;
+  @ViewChild(IonModal) modal!: IonModal;
   addWalletForm!: FormGroup;
 
-  wallets: Wallet[] = [
-    {
-      id: 1,
-      amount: 1000,
-      name: 'test',
-      owner: 'nader',
-    },
-  ];
+  wallets: Wallet[] = [];
+  walletsInDebt: Stat[] = [];
+  walletsNotInDebt: Stat[] = [];
+  totalOwed: number = 0;
+  totalOwned: number = 0;
 
   page: number = 1;
-  pageSize: number = 3;
+  pageSize: number = 4;
   totalItems: number = 0;
 
   isAlertOpen = false;
   alertErrorMessage = '';
   alertButtons = ['OK'];
-
   constructor(private walletService: WalletService) {}
 
   ngOnInit() {
@@ -61,10 +59,31 @@ export class WalletsPage implements OnInit {
       description: new FormControl(''),
       amount: new FormControl(0, [Validators.required]),
     });
-
+    this.getWalletStats();
     this.getWallets();
   }
 
+  getWalletStats() {
+    this.walletService
+      .getWalletsStats()
+      .then((result) => {
+        if (
+          !!result['totalOwed' as keyof object] &&
+          !!result['totalOwned' as keyof object] &&
+          !!result['walletsInDebt' as keyof object] &&
+          !!result['walletsNotInDebt' as keyof object]
+        ) {
+          this.totalOwed = result['totalOwed' as keyof object];
+          this.totalOwned = result['totalOwned' as keyof object];
+          this.walletsInDebt = result['walletsInDebt' as keyof object];
+          this.walletsNotInDebt = result['walletsNotInDebt' as keyof object];
+          console.log(result);
+        } else {
+          console.log('wrong result');
+        }
+      })
+      .catch((err) => console.log(err));
+  }
   getWallets() {
     this.walletService
       .getWallets(this.page, this.pageSize)
@@ -105,6 +124,8 @@ export class WalletsPage implements OnInit {
         .then((result) => {
           if (result['result' as keyof Object].toString() == 'true') {
             this.modal.dismiss(null, 'confirm');
+            this.getWallets();
+            this.getWalletStats();
           } else {
             this.alertErrorMessage = 'Process failed. Wallet was not inserted.';
             this.setAlertOpen(true);

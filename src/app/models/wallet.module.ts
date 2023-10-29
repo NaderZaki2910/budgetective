@@ -1,4 +1,4 @@
-export type Wallet = {
+type Wallet = {
   id?: number;
   name: string;
   description?: string;
@@ -7,3 +7,5 @@ export type Wallet = {
   date_created?: Date;
   last_edited?: Date;
 };
+
+export default Wallet;

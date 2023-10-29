@@ -1,0 +1,6 @@
+<div class="chart-container">
+  <div *ngIf="data.length === 0">
+    <ion-label> No Data Found </ion-label>
+  </div>
+  <canvas [id]="id">{{ chart }}</canvas>
+</div>
