@@ -1,10 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormControl,
@@ -13,12 +7,11 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { IonModal, IonicModule } from '@ionic/angular';
+import { IonModal, IonPopover, IonicModule } from '@ionic/angular';
 import Wallet from 'src/app/models/wallet.module';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { WalletService } from 'src/app/services/wallet/wallet.service';
 import { ComponentsModule } from '../../components/components.module';
-import { Chart } from 'chart.js';
 import Stat from 'src/app/models/stats.model';
 
 @Component({
@@ -35,7 +28,7 @@ import Stat from 'src/app/models/stats.model';
   ],
 })
 export class WalletsPage implements OnInit {
-  @ViewChild(IonModal) modal!: IonModal;
+  @ViewChild(IonPopover) popover!: IonPopover;
   addWalletForm!: FormGroup;
 
   wallets: Wallet[] = [];
@@ -123,7 +116,7 @@ export class WalletsPage implements OnInit {
         .addWallet(wallet)
         .then((result) => {
           if (result['result' as keyof Object].toString() == 'true') {
-            this.modal.dismiss(null, 'confirm');
+            this.popover.dismiss(null, 'confirm');
             this.getWallets();
             this.getWalletStats();
           } else {

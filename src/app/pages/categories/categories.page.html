@@ -1,0 +1,133 @@
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-card>
+          <ion-card-header>
+            <ion-item lines="none">
+              <ion-card-title>Configure Categories</ion-card-title>
+              <ion-button slot="end" id="open-popover">
+                <ion-icon ios="add-outline" md="add-sharp"></ion-icon>
+              </ion-button>
+            </ion-item>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-breadcrumbs *ngIf="selectedCategoriesPath.length > 0">
+              <ion-breadcrumb
+                (click)="backByIndex(false, i)"
+                *ngFor="let category of selectedCategoriesPath; let i = index"
+              >
+                {{category.name}}
+              </ion-breadcrumb>
+            </ion-breadcrumbs>
+            <ion-list>
+              <ion-item
+                [detail]="category.child_count && category.child_count > 0"
+                *ngFor="let category of categories"
+                (click)="categorySelected(category, false)"
+              >
+                <ion-label> {{category.name}} </ion-label>
+              </ion-item>
+            </ion-list>
+            <app-paging
+              [size]="pageSize"
+              [itemsAmount]="totalItems"
+              (curPage)="pageChanged($event, false)"
+            >
+            </app-paging>
+          </ion-card-content>
+        </ion-card>
+        <ion-popover
+          trigger="open-popover"
+          #popover
+          (willDismiss)="onWillDismissAddCategory($event)"
+          (didPresent)="onWillPresentAddCategory()"
+        >
+          <ng-template>
+            <ion-content>
+              <form [formGroup]="addCategoryForm" class="px-2">
+                <br />
+                <ion-input
+                  id="name"
+                  label="Name"
+                  labelPlacement="floating"
+                  formControlName="name"
+                  placeholder="Enter The Category's Name"
+                  type="text"
+                  fill="outline"
+                >
+                </ion-input>
+                <br />
+                <ion-item [button]="true" [detail]="true" id="nested-trigger">
+                  <ion-label>
+                    {{selectedParentCategory? selectedParentCategory.name :
+                    'Select Parent'}}
+                  </ion-label>
+                </ion-item>
+
+                <br />
+                <ion-button
+                  (click)="addCategory()"
+                  class="d-flex justify-content-center pb-2"
+                >
+                  Add
+                </ion-button>
+              </form>
+              <ion-popover side="end" trigger="nested-trigger" #nestedPopover>
+                <ng-template>
+                  <ion-content class="py-2">
+                    <ion-breadcrumbs
+                      *ngIf="selectedCategoriesMenuPath.length > 0"
+                    >
+                      <ion-breadcrumb
+                        (click)="backByIndex(true, i)"
+                        *ngFor="let category of selectedCategoriesMenuPath; let i = index"
+                        >{{category.name}}</ion-breadcrumb
+                      >
+                    </ion-breadcrumbs>
+                    <ion-list>
+                      <ion-item
+                        [button]="true"
+                        lines="none"
+                        *ngFor="let category of categoriesMenu"
+                      >
+                        <ion-label
+                          (click)="parentSelected(category)"
+                          slot="start"
+                        >
+                          {{category.name}}
+                        </ion-label>
+                        <ion-icon
+                          ios="chevron-forward-outline"
+                          md="chevron-forward-sharp"
+                          *ngIf="category.child_count && category.child_count > 0"
+                          slot="end"
+                          (click)="categorySelected(category, true)"
+                        >
+                        </ion-icon>
+                      </ion-item>
+                    </ion-list>
+                    <app-paging
+                      [size]="pageSizeMenu"
+                      [itemsAmount]="totalItemsMenu"
+                      (curPage)="pageChanged($event, true)"
+                    >
+                    </app-paging>
+                  </ion-content>
+                </ng-template>
+              </ion-popover>
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+      </ion-col>
+      <ion-col> </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-alert
+    [isOpen]="isAlertOpen"
+    header="Alert"
+    message="{{alertErrorMessage}}"
+    [buttons]="alertButtons"
+    (didDismiss)="setAlertOpen(false)"
+  ></ion-alert>
+</ion-content>

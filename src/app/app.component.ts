@@ -34,6 +34,11 @@ export class AppComponent implements OnInit {
       url: '/wallets',
       icon: 'wallet',
     },
+    {
+      title: 'Categories',
+      url: '/categories',
+      icon: 'layers',
+    },
   ];
   public labels = [];
   constructor(

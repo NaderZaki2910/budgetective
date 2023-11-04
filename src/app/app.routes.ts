@@ -29,4 +29,12 @@ export const routes: Routes = [
       import('./pages/wallets/wallets.page').then((m) => m.WalletsPage),
     canActivate: [AuthGuard],
   },
+  {
+    path: 'categories',
+    loadComponent: () =>
+      import('./pages/categories/categories.page').then(
+        (m) => m.CategoriesPage
+      ),
+    canActivate: [AuthGuard],
+  },
 ];

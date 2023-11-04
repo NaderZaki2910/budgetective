@@ -1,39 +1,35 @@
 <ion-content>
   <div class="d-flex justify-content-center vertical-center">
     <ion-card>
-      <ion-card-title class="d-flex justify-content-center">
-        <ion-img id="logo" class="w-75 my-2"></ion-img>
-      </ion-card-title>
+      <ion-card-header class="d-flex justify-content-center">
+        <ion-img id="logo"></ion-img>
+      </ion-card-header>
       <ion-card-content>
         <form [formGroup]="login">
-          <ion-grid>
-            <ion-col>
-              <ion-row class="pb-1">
-                <ion-input
-                  id="username"
-                  label="Username"
-                  labelPlacement="floating"
-                  formControlName="username"
-                  placeholder="Enter Username"
-                >
-                </ion-input>
-              </ion-row>
-              <ion-row class="pb-1">
-                <ion-input
-                  id="password"
-                  label="Password"
-                  labelPlacement="floating"
-                  formControlName="password"
-                  placeholder="Enter Password"
-                  type="password"
-                >
-                </ion-input>
-              </ion-row>
-              <ion-row class="d-flex justify-content-center">
-                <ion-button (click)="Login()"> Login </ion-button>
-              </ion-row>
-            </ion-col>
-          </ion-grid>
+          <ion-input
+            id="username"
+            label="Username"
+            labelPlacement="floating"
+            formControlName="username"
+            placeholder="Enter Username"
+            fill="outline"
+          >
+          </ion-input>
+          <br />
+          <ion-input
+            id="password"
+            label="Password"
+            labelPlacement="floating"
+            formControlName="password"
+            placeholder="Enter Password"
+            type="password"
+            fill="outline"
+          >
+          </ion-input>
+          <br />
+          <ion-button (click)="Login()" class="d-flex justify-content-center">
+            Login
+          </ion-button>
         </form>
       </ion-card-content>
     </ion-card>
